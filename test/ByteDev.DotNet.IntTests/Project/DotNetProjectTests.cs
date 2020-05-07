@@ -146,7 +146,7 @@ namespace ByteDev.DotNet.IntTests.Project
 
                 Assert.That(sut.PackageReferences.First().Name, Is.EqualTo("Microsoft.NET.Test.Sdk"));
                 Assert.That(sut.PackageReferences.First().Version, Is.EqualTo("15.8.0"));
-                Assert.That(sut.PackageReferences.First().InclueAssets, Is.Empty);
+                Assert.That(sut.PackageReferences.First().IncludeAssets, Is.Empty);
                 Assert.That(sut.PackageReferences.First().ExcludeAssets, Is.Empty);
                 Assert.That(sut.PackageReferences.First().PrivateAssets, Is.Empty);
             }
@@ -159,8 +159,8 @@ namespace ByteDev.DotNet.IntTests.Project
                 Assert.That(sut.PackageReferences.Second().Name, Is.EqualTo("NUnit"));
                 Assert.That(sut.PackageReferences.Second().Version, Is.EqualTo("3.10.1"));
 
-                Assert.That(sut.PackageReferences.Second().InclueAssets.First(), Is.EqualTo("Compile"));
-                Assert.That(sut.PackageReferences.Second().InclueAssets.Second(), Is.EqualTo("Runtime"));
+                Assert.That(sut.PackageReferences.Second().IncludeAssets.First(), Is.EqualTo("Compile"));
+                Assert.That(sut.PackageReferences.Second().IncludeAssets.Second(), Is.EqualTo("Runtime"));
 
                 Assert.That(sut.PackageReferences.Second().ExcludeAssets.First(), Is.EqualTo("ContentFiles"));
                 Assert.That(sut.PackageReferences.Second().ExcludeAssets.Second(), Is.EqualTo("Build"));
@@ -184,6 +184,51 @@ namespace ByteDev.DotNet.IntTests.Project
                 var sut = CreateSut(TestProjFiles.OldFormat.Framework462);
 
                 Assert.That(sut.PackageReferences, Is.Empty);
+            }
+        }
+
+        [TestFixture]
+        public class References : DotNetProjectTests
+        {
+            [Test]
+            public void WhenNewFormat_AndNoReferences_ThenReturnEmpty()
+            {
+                var sut = CreateSut(TestProjFiles.NewFormat.Core21Exe);
+
+                Assert.That(sut.References, Is.Empty);
+            }
+
+            [Test]
+            public void WhenNewFormat_AndNoAssertDetails_ThenReturnEmpty()
+            {
+                var sut = CreateSut(TestProjFiles.NewFormat.Core21);
+
+                Assert.That(sut.References, Is.Empty);
+            }
+
+            [Test]
+            public void WhenOldFormat_AndReferenceHasNoVersion_ThenReturnReferences()
+            {
+                var sut = CreateSut(TestProjFiles.OldFormat.Framework462);
+
+                Assert.That(sut.References.First().Name, Is.EqualTo("System"));
+                Assert.That(sut.References.First().Version, Is.Null);
+            }
+
+            [Test]
+            public void WhenOldFormat_AndReferenceHasFullDetails_ThenReturnReferences()
+            {
+                var sut = CreateSut(TestProjFiles.OldFormat.Framework462);
+
+                Assert.That(sut.References.Ninth().Name, Is.EqualTo("TechTalk.SpecFlow"));
+                Assert.That(sut.References.Ninth().Version, Is.EqualTo("2.1.0.0"));
+                Assert.That(sut.References.Ninth().Culture, Is.EqualTo("neutral"));
+                Assert.That(sut.References.Ninth().PublicKeyToken, Is.EqualTo("0778194805d6db41"));
+                Assert.That(sut.References.Ninth().ProcessorArchitecture, Is.EqualTo("MSIL"));
+
+                Assert.That(sut.References.Ninth().HintPath, Is.EqualTo("..\\packages\\SpecFlow.2.1.0\\lib\\net45\\TechTalk.SpecFlow.dll"));
+                Assert.That(sut.References.Ninth().Aliases, Is.Empty);
+                Assert.That(sut.References.Ninth().Private, Is.True);
             }
         }
 

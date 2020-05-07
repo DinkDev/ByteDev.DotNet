@@ -8,7 +8,7 @@ namespace ByteDev.DotNet.Project
     /// </summary>
     public class PackageReference
     {
-        private IEnumerable<string> _inclueAssets;
+        private IEnumerable<string> _includeAssets;
         private IEnumerable<string> _excludeAssets ;
         private IEnumerable<string> _privateAssets;
 
@@ -27,10 +27,10 @@ namespace ByteDev.DotNet.Project
         /// By default, all package assets are included.
         /// Possible values: Compile;Runtime;ContentFiles;Build;Native;Analyzers or All or None.
         /// </summary>
-        public IEnumerable<string> InclueAssets
+        public IEnumerable<string> IncludeAssets
         {
-            get => _inclueAssets ?? (_inclueAssets = Enumerable.Empty<string>());
-            internal set => _inclueAssets = value;
+            get => _includeAssets ?? (_includeAssets = Enumerable.Empty<string>());
+            internal set => _includeAssets = value;
         }
 
         /// <summary>

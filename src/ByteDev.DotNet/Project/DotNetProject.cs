@@ -55,6 +55,12 @@ namespace ByteDev.DotNet.Project
         public IEnumerable<PackageReference> PackageReferences { get; private set; }
 
         /// <summary>
+        /// Collection of references to external assemblies.  Will return empty unless the project
+        /// is in the old format.
+        /// </summary>
+        public IEnumerable<Reference> References { get; private set; }
+
+        /// <summary>
         /// Assembly info properties. 
         /// </summary>
         public AssemblyInfoProperties AssemblyInfo { get; private set; }
@@ -82,6 +88,7 @@ namespace ByteDev.DotNet.Project
 
             ProjectReferences = itemGroups.GetProjectReferences();
             PackageReferences = itemGroups.GetPackageReferences();
+            References = itemGroups.GetReferences();
         }
 
         private void SetPropertyGroupProperties(XDocument xDocument)
